@@ -4,7 +4,7 @@ function DTA_combined_struct(savelocation,summarieslocation)
 % Created By:     Rebecca Frederick
 % Date Created:   24 April 2025
 % Modified By:    Rebecca Frederick
-% Date Modified:  29 May 2025
+% Date Modified:  09 OCT 2025
 %
 % FILE OPERATION:
 % Summarizes CSC and |Z| and OCP values accross multiple files.
@@ -52,24 +52,21 @@ for k = 1:length(nameStructs)
     animal = DTA_read_output.fileLabels.animal;  % format = project-specific
     electrode = DTA_read_output.fileLabels.electrode;  % format = E00 or E000
     test = DTA_read_output.fileLabels.test;  % format = A (i.e. A,B,...,Z,ZA,ZB,...)
-    %other = DTA_read_output.fileLabels.other;  % format = project-specific
+    other = DTA_read_output.fileLabels.other;  % format = project-specific
     %
     calcdata = {DTA_read_output.Calculated};
     %
     switch testType
         case 'OCP'
             rawdata = DTA_read_output.ocpcurve;
-            combinedDTA.(wafer).(device).(date).(electrode).(testType) = struct('testID',test,'rawdata',rawdata,'calcdata',calcdata);
-%            combinedDTA.(wafer).(device).(animal).(date).(electrode).(testType) = struct('testID',test,'rawdata',rawdata,'calcdata',calcdata);
+            combinedDTA.(wafer).(device).(date).(electrode).(testType) = struct('testID',test,'environment',animal,'rawdata',rawdata,'calcdata',calcdata,'otherinfo',other);
         case 'EIS'
             rawdata = DTA_read_output.eis;
-            combinedDTA.(wafer).(device).(date).(electrode).(testType) = struct('testID',test,'rawdata',rawdata,'calcdata',calcdata);
-%            combinedDTA.(wafer).(device).(animal).(date).(electrode).(testType) = struct('testID',test,'rawdata',rawdata,'calcdata',calcdata);
+            combinedDTA.(wafer).(device).(date).(electrode).(testType) = struct('testID',test,'environment',animal,'rawdata',rawdata,'calcdata',calcdata,'otherinfo',other);
         case 'CV'
             scanrate = sprintf('%s%d','sr',round(str2num(DTA_read_output.settings.scanrate)));
-            rawdata = DTA_read_output.cvcurve(end-1);  % pulls only 2nd to last curve
-            combinedDTA.(wafer).(device).(date).(electrode).(testType).(scanrate) = struct('testID',test,'rawdata',rawdata,'calcdata',calcdata);
-%            combinedDTA.(wafer).(device).(animal).(date).(electrode).(testType).(scanrate) = struct('testID',test,'rawdata',rawdata,'calcdata',calcdata);
+            rawdata = DTA_read_output.cvcurve;  % pulls all cv curves
+            combinedDTA.(wafer).(device).(date).(electrode).(testType).(scanrate) = struct('testID',test,'environment',animal,'rawdata',rawdata,'calcdata',calcdata,'otherinfo',other);
     end
     %
     clear DTA_read_output

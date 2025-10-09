@@ -6,7 +6,7 @@ function DTA_plots(savelocation,summarieslocation,uservals)
 % Created By:     Rebecca Frederick
 % Date Created:   16 May 2025
 % Modified By:    Rebecca Frederick
-% Date Modified:  10 July 2025
+% Date Modified:  09 OCT 2025
 %
 % FILE OPERATION:
 % Summarizes CSC and |Z| and OCP values accross multiple files.
@@ -322,9 +322,10 @@ for r = 1:length(wafer_list)  % r = count for waferIDs (lvl01) in combinedDTA
                             scanrate_val = string(str2num(scanrate(3:end))/1000);
                             
                             % Pull current dataset:
-                            temp_cv_time = cell2mat(combinedDTA.(wafer).(device).(date).(electrode).(testType).(scanrate).rawdata.time);
-                            temp_cv_v = cell2mat(combinedDTA.(wafer).(device).(date).(electrode).(testType).(scanrate).rawdata.Vf);
-                            temp_cv_i = cell2mat(combinedDTA.(wafer).(device).(date).(electrode).(testType).(scanrate).rawdata.Im);
+                            tempdata = combinedDTA.(wafer).(device).(date).(electrode).(testType).(scanrate).rawdata(str2double(uservals{3}));
+                            temp_cv_time = cell2mat(tempdata.time);
+                            temp_cv_v = cell2mat(tempdata.Vf);
+                            temp_cv_i = cell2mat(tempdata.Im);
                             
                             %
                             % Create One Figure Subplot Per Scan Rate...

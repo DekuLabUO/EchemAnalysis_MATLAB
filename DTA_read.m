@@ -81,23 +81,23 @@ labels_count = length(labels_temp); % counts how many separate strings (separate
 date = labels_temp{1};  % format = YYYYMMDD
 wafer = labels_temp{2};  % format = string, project-specific
 device = labels_temp{3};  % format = string, project-specific
-animal = labels_temp{4};  % format = string, project-specific
-electrode = labels_temp{5};  % format = E00 or E000
-test = labels_temp{6};  % format = A (i.e. A,B,...,Z,ZA,ZB,...)
+animal = 'PBS';  %labels_temp{4};  % format = string, project-specific
+electrode = labels_temp{4};  % format = E00 or E000
+test = labels_temp{5};  % format = A (i.e. A,B,...,Z,ZA,ZB,...)
 % Handle additional info not part of main labeling scheme:
-if labels_count>7
-    other = labels_temp{7};  % format = project-specific
+if labels_count>6
+    other = labels_temp{6};  % format = project-specific
     for lbl = 7:labels_count-1
         other2 = labels_temp{lbl+1};
         other = join([other,'_',other2],1);  % format = project-specific
     end
-elseif labels_count==7
-    other = labels_temp{7};  % format = project-specific
+elseif labels_count==6
+    other = labels_temp{6};  % format = project-specific
 else
     other = ' ';
 end
 % Create Structure with New Labels/Categories:
-DTA_read_output.fileLabels = struct('date',date,'wafer',wafer,'device',device,'animal',animal,'electrode',electrode,'test',test,'other',other);
+DTA_read_output.fileLabels = struct('date',date,'wafer',wafer,'device',device,'animal', animal,'electrode',electrode,'test',test,'other',other);
 % ------------------------------------------------------------------------
 % END OF FILE NAME CONVENTION EDIT
 % ------------------------------------------------------------------------

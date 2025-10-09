@@ -1,7 +1,7 @@
 % Created By:     Rebecca Frederick
 % Date Created:   24 April 2025
 % Modified By:    Rebecca Frederick
-% Date Modified:  29 May 2025
+% Date Modified:  09 OCT 2025
 % ------------------------------------------------------------------------
 %                           FILE INFORMATION
 % ------------------------------------------------------------------------
@@ -67,6 +67,7 @@ end
 for j = 1:length(nameFiles)   
     DTA_read(nameFiles(j),savelocation)
 end
+disp('DTA_read complete')
 %
 % ------------------------------------------------------------------------
 %%                ADD CALCULATED VALUES INTO STRUCTURES
@@ -80,7 +81,7 @@ clear DTA_read_output
 prompt = {'Frequency to Use for |Z| Summaries (in Hz)','Electrode GSA (in um^2)','CV Curve Number to Use for CSC (positive integer)','Percent of Data to Average for OCP Value (positive integer)'};
 dlgtitle = 'Input Values for Calculations';
 fieldsize = [1 45; 1 45; 1 45; 1 45];
-definput = {'1000', '2000', '3', '10'}; % Hz, um^2, integer, integer
+definput = {'1000', '4000', '3', '10'}; % Hz, um^2, integer, integer
 uservals = inputdlg(prompt,dlgtitle,fieldsize,definput)
 % Move user inputs to variables for DTA_calc function inputs:
 eis_val = str2double(uservals{1});
@@ -96,6 +97,7 @@ for k = 1:length(nameStructs)
     save(current_file,'DTA_read_output');
     clear DTA_read_output
 end
+disp('DTA_calc complete')
 %
 % ------------------------------------------------------------------------
 %%                 ADD SUMMARIES FOR |Z|, CSC, & OCP
@@ -113,18 +115,21 @@ else
 end
 % Run function DTA_summaries on all .mat structures in savelocation:
 DTA_summaries(savelocation,summarieslocation);
-
+disp('DTA_summaries complete')
+%
 % ------------------------------------------------------------------------
 %%                   COMBINE FILE STRUCTURES INTO ONE
 % ------------------------------------------------------------------------
 % Run function DTA_master_struct on all .mat structures in savelocation:
 DTA_combined_struct(savelocation,summarieslocation)
+disp('DTA_combined_struct complete')
 %
 % ------------------------------------------------------------------------
 %%                    ADD PLOTS FOR OCP, |Z|, & CSC
 % ------------------------------------------------------------------------
 % Run function DTA_plots on summary files in savelocation:
 DTA_plots(savelocation,summarieslocation,uservals);
+disp('DTA_plots complete')
 %
 % ------------------------------------------------------------------------
 %%               COMBINE STRUCTURES INTO MASTER STRUCTURE

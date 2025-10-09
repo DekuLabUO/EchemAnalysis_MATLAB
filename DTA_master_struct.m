@@ -4,7 +4,7 @@
 % Created By:     Rebecca Frederick
 % Date Created:   24 April 2025
 % Modified By:    Rebecca Frederick (RAF)
-% Date Modified:  09 July 2025
+% Date Modified:  11 August 2025
 %
 % FILE OPERATION:
 %   [1] Opens "combinedDTA" structres ouput by "DTA_combined_struct" function.
@@ -158,22 +158,24 @@ for q = 1:length(dataList)  % q = count for items in dataList
     end  % end for file check warning message
 end  % end for q, loop through all combinedDTA files
 
-%{
-% Test loop
-wafer_list = fieldnames(combinedDTA);
-for r = 1:length(wafer_list)
-    wafer = wafer_list{r};
-    device_list = fieldnames(combinedDTA.(wafer));
-        for s = 1:length(device_list)
-            device = device_list{s};
-            output = combinedDTA.(wafer).(device).d20250707.E01.OCP;
-        end
-end
-%}
 
+% ------------------------------------------------------------------------
+%%           Add Experiment Dates for Each Device
+% ------------------------------------------------------------------------
+% Example:
+%   masterDTA.HPI1.HL01PI.ExpInfo = {'AgingStart', 20250709;'Pause1Start',20250801,'Pause1End',20250809};
+% PI Devices:
+masterDTA.HPI1.HL01PI.ExpInfo = {'AgingStart', datetime(2025,07,09,'Format','yyyyMMdd')};
+masterDTA.HPI1.HL02PI.ExpInfo = {'AgingStart', datetime(2025,08,08,'Format','yyyyMMdd')};
+masterDTA.HPI1.HL03PI.ExpInfo = {'AgingStart', datetime(2025,09,16,'Format','yyyyMMdd')};
+% aSiC Devices:
+masterDTA.HSiC1.HL01SiC.ExpInfo = {'AgingStart', datetime(2025,07,18,'Format','yyyyMMdd')};
+masterDTA.HSiC1.HL02SiC.ExpInfo = {'AgingStart', datetime(2025,09,17,'Format','yyyyMMdd')};
+%
+% ------------------------------------------------------------------------
 % Save new masterDTA structure:
 save(fullfile(AnalysisLocation,'masterDTA_Struct.mat'),'masterDTA');
-
+% 
 % ------------------------------------------------------------------------
 %                             END OF FILE
 % ------------------------------------------------------------------------
